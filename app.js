@@ -12,6 +12,10 @@ let middleImageElement = document.getElementById('middleImage');
 let rightImageElement = document.getElementById('rightImage');
 
 //let arrayobject=[];
+let arrayofname=[];
+let arrayofclick=[];
+let arrayofShows=[];
+let arrayofimg=[];
 
 function BussMall(name,source) {
 
@@ -20,7 +24,7 @@ function BussMall(name,source) {
   this.Shows=0;
   this.click=0;
   BussMall.allImag.push(this);
-
+  arrayofname.push(this.name);
 }
 
 BussMall.allImag=[];
@@ -67,13 +71,19 @@ function render(){
 
 
 
-  while(leftImageIndex === rightImageIndex || leftImageIndex === rightImageIndex || middleImageIndex ===rightImageIndex){
+  while(arrayofimg.includes(rightImageIndex) === BussMall.allImag [rightImageIndex] || arrayofimg.includes (leftImageIndex,2) ===BussMall.allImag[leftImageIndex] || arrayofimg.includes(middleImageIndex,2) === BussMall.allImag [middleImageIndex] ){
+    rightImageIndex = getRandomNum();
+
     leftImageIndex = getRandomNum();
     middleImageIndex = getRandomNum();
 
   }
 
+  while(leftImageIndex === rightImageIndex || leftImageIndex === middleImageIndex || middleImageIndex===rightImageIndex){
+    leftImageIndex = getRandomNum();
+    middleImageIndex = getRandomNum();
 
+  }
   leftImageElement.src=BussMall.allImag[leftImageIndex].source;
   BussMall.allImag[leftImageIndex].Shows++;
 
@@ -84,19 +94,30 @@ function render(){
   BussMall.allImag[rightImageIndex].Shows++;
 
 
+  console.log(leftImageIndex, middleImageIndex, rightImageIndex);
+
+  for(let i=0 ; i<BussMall.allImag.length ; i++){
+    arrayofimg.push(BussMall.allImag[rightImageIndex]);
+    arrayofimg.push(BussMall.allImag[leftImageElement]);
+    arrayofimg.push(BussMall.allImag[middleImageElement]);
+  }
+
 }
 
 render();
 
 displaybutton.addEventListener('click',displaylist);
-
 container.addEventListener('click', handleClicking);
+//rightImageElement.addEventListener('click', handleClicking);
+//middleImageElement.addEventListener('click', handleClicking);
+//leftImageElement.addEventListener('click', handleClicking);
 
 function handleClicking(event) {
 
   round++;
 
   if(round <= maxround){
+
     if(event.target.id === 'leftImage'){
       BussMall.allImag[leftImageIndex].click++;
 
@@ -105,25 +126,27 @@ function handleClicking(event) {
       BussMall.allImag[rightImageIndex].click++;
 
     }
-    else {
+    else if (event.target.id === 'middleImage') {
       BussMall.allImag[middleImageIndex].click++;
 
     }
 
+
     render();
-    console.log(BussMall.allImag);
   }
   else{
 
     container.removeEventListener('click', handleClicking);
   }
 
-
 }
+
+
 
 let button = document.getElementById('button');
 button.addEventListener('submit', displaylist);
 
+//datachart() ;
 
 function displaylist () {
 
@@ -139,6 +162,39 @@ function displaylist () {
       button.removeEventListener('click', displaylist);
 
     }
+    datachart() ;
+  }
+}
+
+function datachart(){
+
+  for (let i=0 ; i < BussMall.allImag.length ;i++){
+
+    arrayofclick.push(BussMall.allImag[i].click);
+    arrayofShows.push(BussMall.allImag[i].Shows);
 
   }
+  console.log(arrayofclick);
+  console.log(arrayofShows);
+  let ctx = document.getElementById('mychart').getContext('2d');
+  let mychart = new Chart(ctx,{
+    type: 'bar',
+    data: {
+      labels: arrayofname,
+      datasets:[{
+        label: 'products data',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: arrayofclick,},
+      {
+        label: 'products data',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: arrayofShows,
+      }]
+    },
+
+    options: {}
+  });
+
 }
