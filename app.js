@@ -118,6 +118,7 @@ container.addEventListener('click', handleClicking);
 //leftImageElement.addEventListener('click', handleClicking);
 
 function handleClicking(event) {
+  previuosattemp();
 
   round++;
 
@@ -135,9 +136,9 @@ function handleClicking(event) {
       BussMall.allImag[middleImageIndex].click++;
 
     }
+    localstorage();
 
-
-    render();
+    // render();
   }
   else{
 
@@ -147,13 +148,8 @@ function handleClicking(event) {
 }
 
 
-
-let button = document.getElementById('button');
-button.addEventListener('submit', displaylist);
-
-//datachart() ;
-
 function displaylist () {
+  datachart() ;
 
   if(round >= 25){
 
@@ -167,9 +163,40 @@ function displaylist () {
       button.removeEventListener('click', displaylist);
 
     }
-    datachart() ;
+  }
+  else{
+    previuosattemp();
+    let unorderdList= document.getElementById('result');
+    let li;
+    for(let i = 0 ; i < BussMall.allImag.length; i++){
+      li = document.createElement('li');
+      unorderdList.appendChild(li);
+      li.textContent = ` ${BussMall.allImag[i].name} had ${BussMall.allImag[i].click} Votes and was seen ${BussMall.allImag[i].Shows} times..`;
+    }
   }
 }
+
+function localstorage()
+{
+  let attemp=JSON.stringify(BussMall.allImag);
+  localStorage.setItem('allattemp',attemp );
+}
+function previuosattemp(){
+  let pattemp=localStorage.getItem('allattemp');
+  let convprattemp =JSON.parse(pattemp);
+
+  if(convprattemp){
+    BussMall.allImag = convprattemp;
+  }
+  render();
+
+}
+
+let button = document.getElementById('button');
+button.addEventListener('submit', displaylist);
+
+
+
 
 function datachart(){
 
