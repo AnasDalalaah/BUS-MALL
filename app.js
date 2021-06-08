@@ -71,19 +71,24 @@ function render(){
 
 
 
+  /*
   while(arrayofimg.includes(rightImageIndex) === BussMall.allImag [rightImageIndex] || arrayofimg.includes (leftImageIndex,2) ===BussMall.allImag[leftImageIndex] || arrayofimg.includes(middleImageIndex,2) === BussMall.allImag [middleImageIndex] ){
     rightImageIndex = getRandomNum();
+    middleImageIndex = getRandomNum();
+    leftImageIndex = getRandomNum();
 
+  }*/
+
+  while(leftImageIndex === middleImageIndex || leftImageIndex === rightImageIndex || middleImageIndex===rightImageIndex || arrayofimg.includes(leftImageIndex) || arrayofimg.includes (middleImageIndex) || arrayofimg.includes(rightImageIndex)){
     leftImageIndex = getRandomNum();
     middleImageIndex = getRandomNum();
+    rightImageIndex = getRandomNum();
+
 
   }
+  arrayofimg=[leftImageIndex,middleImageIndex,rightImageIndex];
+  console.log(arrayofimg);
 
-  while(leftImageIndex === rightImageIndex || leftImageIndex === middleImageIndex || middleImageIndex===rightImageIndex){
-    leftImageIndex = getRandomNum();
-    middleImageIndex = getRandomNum();
-
-  }
   leftImageElement.src=BussMall.allImag[leftImageIndex].source;
   BussMall.allImag[leftImageIndex].Shows++;
 
