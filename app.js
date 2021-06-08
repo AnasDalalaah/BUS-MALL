@@ -16,6 +16,7 @@ let arrayofname=[];
 let arrayofclick=[];
 let arrayofShows=[];
 let arrayofimg=[];
+BussMall.allImag=[];
 
 function BussMall(name,source) {
 
@@ -27,7 +28,7 @@ function BussMall(name,source) {
   arrayofname.push(this.name);
 }
 
-BussMall.allImag=[];
+
 
 new BussMall('bag','images/bag.jpg');
 new BussMall('banana','images/banana.jpg');
@@ -101,12 +102,12 @@ function render(){
 
   console.log(leftImageIndex, middleImageIndex, rightImageIndex);
 
-  for(let i=0 ; i<BussMall.allImag.length ; i++){
+  /*for(let i=0 ; i<BussMall.allImag.length ; i++){
     arrayofimg.push(BussMall.allImag[rightImageIndex]);
     arrayofimg.push(BussMall.allImag[leftImageElement]);
     arrayofimg.push(BussMall.allImag[middleImageElement]);
   }
-
+*/
 }
 
 render();
@@ -118,7 +119,7 @@ container.addEventListener('click', handleClicking);
 //leftImageElement.addEventListener('click', handleClicking);
 
 function handleClicking(event) {
-  previuosattemp();
+  //previuosattemp();
 
   round++;
 
@@ -136,20 +137,33 @@ function handleClicking(event) {
       BussMall.allImag[middleImageIndex].click++;
 
     }
-    localstorage();
+    // localstorage();
 
-    // render();
+    render();
   }
   else{
 
     container.removeEventListener('click', handleClicking);
+    localstorage();
+    for (let i=0 ; i < BussMall.allImag.length ;i++){
+
+      arrayofclick.push(BussMall.allImag[i].click);
+      arrayofShows.push(BussMall.allImag[i].Shows);
+
+    }
+    datachart();
   }
 
 }
 
+//displaybutton.addEventListener('click',displaylist);
+
+let button = document.getElementById('button');
+button.addEventListener('submit', displaylist);
 
 function displaylist () {
-  datachart() ;
+
+  // datachart() ;
 
   if(round >= 25){
 
@@ -164,16 +178,32 @@ function displaylist () {
 
     }
   }
-  else{
-    previuosattemp();
-    let unorderdList= document.getElementById('result');
-    let li;
-    for(let i = 0 ; i < BussMall.allImag.length; i++){
-      li = document.createElement('li');
-      unorderdList.appendChild(li);
-      li.textContent = ` ${BussMall.allImag[i].name} had ${BussMall.allImag[i].click} Votes and was seen ${BussMall.allImag[i].Shows} times..`;
-    }
-  }
+
+}
+
+function datachart(){
+
+  let ctx = document.getElementById('mychart').getContext('2d');
+  let mychart = new Chart(ctx,{
+    type: 'bar',
+    data: {
+      labels: arrayofname,
+      datasets:[{
+        label: '# of Click',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: arrayofclick,},
+      {
+        label: '# of Shows',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: arrayofShows,
+      }]
+    },
+
+    options: {}
+  });
+
 }
 
 function localstorage()
@@ -188,45 +218,6 @@ function previuosattemp(){
   if(convprattemp){
     BussMall.allImag = convprattemp;
   }
-  render();
-
 }
 
-let button = document.getElementById('button');
-button.addEventListener('submit', displaylist);
-
-
-
-
-function datachart(){
-
-  for (let i=0 ; i < BussMall.allImag.length ;i++){
-
-    arrayofclick.push(BussMall.allImag[i].click);
-    arrayofShows.push(BussMall.allImag[i].Shows);
-
-  }
-  console.log(arrayofclick);
-  console.log(arrayofShows);
-  let ctx = document.getElementById('mychart').getContext('2d');
-  let mychart = new Chart(ctx,{
-    type: 'bar',
-    data: {
-      labels: arrayofname,
-      datasets:[{
-        label: 'products data',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
-        data: arrayofclick,},
-      {
-        label: 'products data',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
-        data: arrayofShows,
-      }]
-    },
-
-    options: {}
-  });
-
-}
+previuosattemp();
